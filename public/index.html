@@ -5,14 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="base.css" />
-    <!-- <link rel="stylesheet" href="https://stripe-samples.git" /> -->
     <title>Document</title>
   </head>
   <body>
     <div id="main">
       <div id="checkout">
         <div id="payment-form">
-          <h1>Step 1: Save Card Details</h1>
+          <h1>Save Card Details</h1>
         </div>
         <fieldset>
           <label>
@@ -21,7 +20,7 @@
               id="cardholder-name"
               type="text"
               class="field"
-              value="Jenny Rosen"
+              value="Rahul Kumar"
             />
           </label>
         </fieldset>
@@ -49,35 +48,21 @@
         });
 
       var stripe = Stripe(
-        "pk_test_51N0QHfSDtmlEB37S1mbq4LhqWTxP5j5cAHnPXeex6TmniSd1ZUIEDx7CBK1rSEyiArK8P7EuQ1GTVhTnwB3wFBN9006MPCwFMZ"
+        "stripe publishable key"
       );
 
       var elements = stripe.elements();
       var cardElement = elements.create("card");
       cardElement.mount("#card-element");
 
-      //Submit the card details to Stripe from the client
+    
       var cardholderName = document.getElementById("cardholder-name");
       var cardButton = document.getElementById("card-button");
-      // rely on setup intent fetched above instead.
-      // var clientSecret = cardButton.dataset.secret;
+     
 
       cardButton.addEventListener("click", function (ev) {
         ev.preventDefault();
         debug("handling card setup...");
-        // Note: stripe.handleCardSetup was deprecated. Instead, use confirmCardSetup
-        // https://stripe.com/docs/js/setup_intents/confirm_card_setup
-        //
-        // Old code from the video for reference:
-        // stripe.handleCardSetup(
-        //   setupIntent.client_secret, cardElement, {
-        //     payment_method_data: {
-        //       billing_details: {name: cardholderName.value}
-        //     }
-        //   }
-        // ).then(function(result) {
-
-        // new code that uses confirmCardSetup:
         stripe
           .confirmCardSetup(setupIntent.client_secret, {
             payment_method: {
