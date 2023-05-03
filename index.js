@@ -12,23 +12,18 @@ app.get('/',(req,res)=>{
     res.render("index.html")
 })
 
+app.get('/setup-intents',async (req,res)=>{
+    const setupIntent = await stripe.setupIntents.create();
+    res.send(setupIntent)
+})
 
-
-app.post('/create-payment-intent',async (req,res)=>{
-    const paymentIntent=await stripe.paymentIntents.create({
-        amount:1999,
-        currency:'usd'
-    })
-
-    // const paymentIntent = await stripe.paymentIntents.create({
-    //     amount: 2000,
-    //     currency: 'usd',
-    //     automatic_payment_methods: {enabled: true},
-    //   });
-    res.json({clientSecret:paymentIntent.client_secret})
-
+app.post('/create_customer',async (req,res)=>{
+    const customer = await stripe.customers.create({
+        'payment_method':req.body.payment_method
+      });
+      res.send(JSON.stringify(customer))
 })
 
 app.listen(3000, ()=>{
     console.log("Listning on 3000")
-})
+}) 
